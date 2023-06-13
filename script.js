@@ -4,7 +4,6 @@ const transactionAmount = document.getElementById("amount");
 const transactionType = document.getElementById("transactionType");
 const list = document.getElementById("list");
 const balance = document.getElementById("balance");
-
 let balanceValue = 0;
 
 const deleteElement = (element) => {};
@@ -67,6 +66,29 @@ const addExpense = () => {
   balance.innerHTML = balanceValue;
 };
 
+const balanceDiv = document.querySelector(".balance");
+var index = 1;
+const inType = document.querySelector("#transactionType");
+
+const addTableEntry = () => {
+  var balanceTable = document.querySelector(".balance-table");
+  let tableRow = document.createElement("tr");
+  tableRow.className = "balanceTableRow";
+  let num = document.createElement("td");
+  num.innerHTML = index;
+  let itemName = document.createElement("td");
+  itemName.innerHTML = transactionName.value;
+  let itemPrice = document.createElement("td");
+  itemPrice.innerHTML = transactionAmount.value;
+  let type = document.createElement("td");
+  type.innerHTML = inType.value;
+  tableRow.append(num, itemName, itemPrice, type);
+  balanceTable.append(tableRow);
+  index++;
+  // console.log(inType.value);
+};
+
 btn.addEventListener("click", () => {
-  addExpense();
+  // addExpense();
+  addTableEntry();
 });
