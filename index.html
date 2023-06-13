@@ -29,22 +29,20 @@
         </button>
     </div>
     <div class="balance">Balance: <span id="balance">0</span></div>
-    <button style="font-size:24px"><i class="fa fa-edit"></i></button>
-    <div class="list" id="list">
-        <table class="balance-table">
-            <thead>
-                <tr>
-                    <th>Item no.</th>
-                    <th>Item name</th>
-                    <th>Item price</th>
-                    <th>Type</th>
-                </tr>
-            </thead>
-            <tbody class="list-items">
+    <button id="editBtn"><i class="fa fa-edit"></i></button>
+    <table class="list" id="list">
+        <thead>
+            <tr>
+                <th>Item name</th>
+                <th>Item price</th>
+                <th>Type</th>
+                <th class="delete">To delete</th>
+            </tr>
+        </thead>
+        <tbody class="list-items" id="listItems">
 
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
     <footer>
         <p>Created by Github Copilot</p>
     </footer>

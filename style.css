@@ -1,0 +1,7 @@
+table .delete {
+  display: none;
+}
+
+table.edit .delete {
+  display: inline-block;
+}

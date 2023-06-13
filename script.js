@@ -4,91 +4,134 @@ const transactionAmount = document.getElementById("amount");
 const transactionType = document.getElementById("transactionType");
 const list = document.getElementById("list");
 const balance = document.getElementById("balance");
+const editBtn = document.getElementById("editBtn");
+const tableBody = document.getElementById("listItems");
+
+const editIcon = `<i class="fa fa-edit"></i>`;
+const transactionTypes = `<select id="transactionType"><option value="income">Income</option><option value="expense">Expense</option></select>`;
+
 let balanceValue = 0;
+let editing = false;
 
 const deleteElement = (element) => {};
 
-const modifyElement = (element, edit = false) => {
-  let parentDiv = element.parentElement;
-  let currentExpense = expenditureValue.innerText;
-  let parentAmount = parentDiv.querySelector(".amount").innerText;
-  if (edit) {
-    let parentText = parentDiv.querySelector(".product").innerText;
-    productTitle.value = parentText;
-    userAmount.value = parentAmount;
-    disableButtons(true);
-  }
+const modifyElement = (element, edit = false) => {};
 
-  expenditureValue.innerText =
-    parseInt(currentExpense) - parseInt(parentAmount);
-  parentDiv.remove();
-};
-
-const addExpense = () => {
-  const name = transactionName.value;
-  const amount = transactionAmount.value;
-  const type = transactionType.value;
-  const transactionDiv = document.createElement("div");
-  const editButton = document.createElement("button");
-  const deleteButton = document.createElement("button");
-
-  transactionDiv.classList.add("transaction");
-  list.appendChild(transactionDiv);
-
-  transactionDiv.innerHTML = `<p class="transaction-name">${name}</p><p class="amount ${
-    type === "income" ? "income" : "expense"
-  }">${type === "income" ? "+" : "-"}${amount}</p>`;
-
-  editButton.classList.add("fa-solid", "fa-pen-to-square", "edit");
-
-  editButton.addEventListener("click", () => {
-    modifyElement(editButton, true);
-  });
-
-  deleteButton.classList.add("fa-solid", "fa-trash-can", "delete");
-
-  deleteButton.addEventListener("click", () => {
-    modifyElement(deleteButton);
-  });
-
-  transactionDiv.appendChild(editButton);
-  transactionDiv.appendChild(deleteButton);
-
-  document.getElementById("list").appendChild(transactionDiv);
-
-  //TODO: Error handling
-  if (type === "income") {
-    balanceValue += Number(amount);
-  } else {
-    balanceValue -= Number(amount);
-  }
-
+const updateBalance = () => {
   balance.innerHTML = balanceValue;
 };
 
-const balanceDiv = document.querySelector(".balance");
-var index = 1;
-const inType = document.querySelector("#transactionType");
+const inputValidation = () => {};
 
-const addTableEntry = () => {
-  var balanceTable = document.querySelector(".balance-table");
-  let tableRow = document.createElement("tr");
-  tableRow.className = "balanceTableRow";
-  let num = document.createElement("td");
-  num.innerHTML = index;
-  let itemName = document.createElement("td");
-  itemName.innerHTML = transactionName.value;
-  let itemPrice = document.createElement("td");
-  itemPrice.innerHTML = transactionAmount.value;
-  let type = document.createElement("td");
-  type.innerHTML = inType.value;
-  tableRow.append(num, itemName, itemPrice, type);
-  balanceTable.append(tableRow);
-  index++;
-  // console.log(inType.value);
+const addExpense = () => {
+  const name = transactionName.value;
+  const amount = Number(transactionAmount.value);
+  const type = transactionType.value;
+  const newRow = document.createElement("tr");
+  const itemName = document.createElement("td");
+  const itemAmount = document.createElement("td");
+  const itemType = document.createElement("td");
+  const deleteCheckbox = document.createElement("input");
+  const itemNameInput = document.createElement("input");
+  const itemAmountInput = document.createElement("input");
+  const itemTypeSelect = document.createElement("select");
+
+  itemTypeSelect.innerHTML = transactionTypes;
+  itemTypeSelect.value = type;
+
+  itemAmountInput.type = "number";
+  itemAmountInput.value = amount;
+
+  itemNameInput.type = "text";
+  itemNameInput.value = name;
+
+  deleteCheckbox.type = "checkbox";
+  deleteCheckbox.classList.add("delete");
+
+  deleteCheckbox.addEventListener("click", () => {
+    deleteCheckbox.classList.toggle("to-delete");
+  });
+
+  itemAmountInput.addEventListener("focus", () => {
+    if (itemTypeSelect.value === "income") {
+      balanceValue -= Number(itemAmountInput.value);
+    } else {
+      balanceValue += Number(itemAmountInput.value);
+    }
+  });
+
+  itemAmountInput.addEventListener("blur", () => {
+    if (itemTypeSelect.value === "income") {
+      balanceValue += Number(itemAmountInput.value);
+    } else {
+      balanceValue -= Number(itemAmountInput.value);
+    }
+    updateBalance();
+  });
+
+  itemTypeSelect.addEventListener("change", () => {
+    if (itemTypeSelect.value === "income") {
+      balanceValue += Number(itemAmountInput.value);
+    } else {
+      balanceValue -= Number(itemAmountInput.value);
+    }
+    updateBalance();
+  });
+
+  itemNameInput.classList.add("editable");
+  itemAmountInput.classList.add("editable");
+  itemTypeSelect.classList.add("editable");
+  itemNameInput.toggleAttribute("disabled");
+  itemAmountInput.toggleAttribute("disabled");
+  itemTypeSelect.toggleAttribute("disabled");
+
+  itemName.appendChild(itemNameInput);
+  itemAmount.appendChild(itemAmountInput);
+  itemType.appendChild(itemTypeSelect);
+
+  newRow.append(itemName, itemAmount, itemType, deleteCheckbox);
+  tableBody.appendChild(newRow);
+
+  if (type === "income") {
+    balanceValue += amount;
+  } else {
+    balanceValue -= amount;
+  }
+  updateBalance();
+};
+
+const toggleDeleteColumn = () => {
+  list.classList.toggle("edit");
+};
+
+const toggleEditiableCells = () => {
+  const editableCells = document.querySelectorAll(".editable");
+  editableCells.forEach((cell) => {
+    cell.toggleAttribute("disabled");
+  });
+};
+
+const deleteRows = () => {
+  const toDelete = document.querySelectorAll(".to-delete");
+  toDelete.forEach((row) => {
+    balanceValue -= Number(row.parentElement.children[1].children[0].value);
+    row.parentElement.remove();
+  });
+  updateBalance();
 };
 
 btn.addEventListener("click", () => {
-  // addExpense();
-  addTableEntry();
+  addExpense();
+});
+
+editBtn.addEventListener("click", () => {
+  if (!editing) {
+    editBtn.innerHTML = "Save";
+  } else {
+    editBtn.innerHTML = editIcon;
+  }
+  toggleDeleteColumn();
+  toggleEditiableCells();
+  deleteRows();
+  editing = !editing;
 });
