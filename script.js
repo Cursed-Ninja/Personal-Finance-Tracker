@@ -102,7 +102,6 @@ const addExpense = () => {
     balanceValue -= amount;
   }
   updateBalance();
-  storeData();
 };
 
 const toggleDeleteColumn = () => {
@@ -141,5 +140,3 @@ editBtn.addEventListener("click", () => {
   deleteRows();
   editing = !editing;
 });
-
-loadData();
