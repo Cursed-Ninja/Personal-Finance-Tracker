@@ -71,9 +71,13 @@ const addExpense = () => {
 
   itemTypeSelect.addEventListener("change", () => {
     if (itemTypeSelect.value === "income") {
-      balanceValue += Number(itemAmountInput.value);
+      balanceValue += Number(
+        itemTypeSelect.parentElement.previousElementSibling.firstChild.value
+      );
     } else {
-      balanceValue -= Number(itemAmountInput.value);
+      balanceValue -= Number(
+        itemTypeSelect.parentElement.previousElementSibling.firstChild.value
+      );
     }
     updateBalance();
   });
@@ -98,6 +102,7 @@ const addExpense = () => {
     balanceValue -= amount;
   }
   updateBalance();
+  storeData();
 };
 
 const toggleDeleteColumn = () => {
@@ -129,9 +134,12 @@ editBtn.addEventListener("click", () => {
     editBtn.innerHTML = "Save";
   } else {
     editBtn.innerHTML = editIcon;
+    storeData();
   }
   toggleDeleteColumn();
   toggleEditiableCells();
   deleteRows();
   editing = !editing;
 });
+
+loadData();
