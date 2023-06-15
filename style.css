@@ -25,24 +25,26 @@ h1 {
   justify-content: center;
 }
 
+#tableWrapper {
+  width: min(800px, 100%);
+  overflow-x: scroll;
+  margin: auto;
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
-}
-
-table .delete {
-  display: none;
-}
-
-table.edit .delete {
-  display: block;
 }
 
 table th,
 table td {
   padding: 8px;
   text-align: left;
+  min-width: 100px;
   border-bottom: 1px solid #ddd;
+}
+table td{
+  overflow-X: scroll;
 }
 
 table th {
@@ -56,3 +58,12 @@ table tr:nth-child(even) {
 table tr:hover {
   background-color: #e5e5e5;
 }
+
+table .delete {
+  display: none;
+}
+
+table.edit .delete {
+  display: block;
+}
+
