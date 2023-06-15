@@ -31,6 +31,7 @@ const addExpense = () => {
   const itemName = document.createElement("td");
   const itemAmount = document.createElement("td");
   const itemType = document.createElement("td");
+  const itemDelete = document.createElement("td");
   const deleteCheckbox = document.createElement("input");
   const itemNameInput = document.createElement("input");
   const itemAmountInput = document.createElement("input");
@@ -46,7 +47,7 @@ const addExpense = () => {
   itemNameInput.value = name;
 
   deleteCheckbox.type = "checkbox";
-  deleteCheckbox.classList.add("delete");
+  itemDelete.classList.add("delete");
 
   deleteCheckbox.addEventListener("click", () => {
     deleteCheckbox.classList.toggle("to-delete");
@@ -71,13 +72,9 @@ const addExpense = () => {
 
   itemTypeSelect.addEventListener("change", () => {
     if (itemTypeSelect.value === "income") {
-      balanceValue += Number(
-        itemTypeSelect.parentElement.previousElementSibling.firstChild.value
-      );
+      balanceValue += Number(itemAmountInput.value);
     } else {
-      balanceValue -= Number(
-        itemTypeSelect.parentElement.previousElementSibling.firstChild.value
-      );
+      balanceValue -= Number(itemAmountInput.value);
     }
     updateBalance();
   });
@@ -92,8 +89,9 @@ const addExpense = () => {
   itemName.appendChild(itemNameInput);
   itemAmount.appendChild(itemAmountInput);
   itemType.appendChild(itemTypeSelect);
+  itemDelete.appendChild(deleteCheckbox);
 
-  newRow.append(itemName, itemAmount, itemType, deleteCheckbox);
+  newRow.append(itemName, itemAmount, itemType, itemDelete);
   tableBody.appendChild(newRow);
 
   if (type === "income") {
@@ -118,8 +116,8 @@ const toggleEditiableCells = () => {
 const deleteRows = () => {
   const toDelete = document.querySelectorAll(".to-delete");
   toDelete.forEach((row) => {
-    balanceValue -= Number(row.parentElement.children[1].children[0].value);
-    row.parentElement.remove();
+    balanceValue -= Number(row.parentElement.parentElement.children[1].children[0].value);
+    row.parentElement.parentElement.remove();
   });
   updateBalance();
 };
@@ -133,7 +131,6 @@ editBtn.addEventListener("click", () => {
     editBtn.innerHTML = "Save";
   } else {
     editBtn.innerHTML = editIcon;
-    storeData();
   }
   toggleDeleteColumn();
   toggleEditiableCells();
