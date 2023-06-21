@@ -4,6 +4,13 @@
   --c: #ccdbfd;
   --d: #c1d3fe;
   --e: #abc4ff;
+  --f: #90b1ff;
+}
+
+body{
+  margin-top: 0px;
+  min-height: 95vh;
+  font-family: "Roboto Mono";
 }
 
 #inputBox {
@@ -21,16 +28,28 @@
 
 h1 {
   text-align: center;
+  margin-top: 0px;
+  font-weight: 100;
 }
+
 .subHeading {
   margin-bottom: 20px;
   text-align: center;
 }
+
 .mainDiv {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+#UtiliaryWrapper{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: min(800px, 100%);
+  margin: 10px auto;
 }
 
 #tableWrapper {
@@ -51,6 +70,7 @@ table td {
   min-width: 100px;
   border-bottom: 1px solid #ddd;
 }
+
 table td {
   overflow-x: scroll;
 }
@@ -97,4 +117,9 @@ table td::-webkit-scrollbar-thumb {
 
 #tableWrapper::-webkit-scrollbar-thumb {
   box-shadow: inset 0 0 0 10px;
+}
+
+footer p{
+  text-align: center;
+  color: var(--f);
 }
