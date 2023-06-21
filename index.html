@@ -28,21 +28,17 @@
   <div class="mainDiv">
     <!-- <p id="error"></p> -->
     <div id="inputBox">
-      <div>
-        <input type="text" id="transactionName" placeholder="Transaction Name" />
-        <input type="text" id="amount" placeholder="Amount" />
-      </div>
-      <div class="dropdown">
-        <select id="transactionType">
-          <option value="income">Income</option>
-          <option value="expense">Expense</option>
-        </select>
-      </div>
-      <p id="errorText"></p>
-      <button id="submit">
-        Add Transaction
-      </button>
+      <input class="input-text" type="text" id="transactionName" placeholder="Transaction Name" />
+      <input class="input-text" type="text" id="amount" placeholder="Amount" />
+      <select id="transactionType">
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+      </select>
     </div>
+    <p id="errorText"></p>
+    <button id="submit">
+      Add Transaction
+    </button>
     <div id="UtiliaryWrapper">
       <div class="balance">Balance: <span id="balance">0</span></div>
       <button id="editBtn"><i class="fa fa-edit"></i></button>
