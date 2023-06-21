@@ -198,7 +198,7 @@ const addExpense = () => {
   const amount = Number(transactionAmount.value);
   const type = transactionType.value;
   const id = uuid();
-  addItemToStore(newRow.id, name, amount, type);
+  addItemToStore(id, name, amount, type);
   addRow(id, name, amount, type);
   saveToLocalStorage();
 };
