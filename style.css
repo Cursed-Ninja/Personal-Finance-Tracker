@@ -32,7 +32,51 @@ h1 {
   align-items: center;
   justify-content: center;
 }
-
+#submit {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 20px;
+  text-align: center;
+  text-decoration: none;
+  background-color: var(--c);
+  color: #ffff;
+  border-radius: 24px;
+  border-style: none;
+  cursor: pointer;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 600;
+}
+#submit:hover {
+  background-color: var(--d);
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+    0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+#submit:active {
+  background-color: var(--e);
+}
+#editBtn {
+  background-color: var(--a);
+  padding: 10px 20px;
+  border-radius: 8px;
+  border-style: none;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.balBtn {
+  display: flex;
+  justify-content: space-evenly;
+}
+#inputBox {
+  display: flex;
+  flex-direction: column;
+}
+.dropdown {
+  display: flex;
+  padding: 10px;
+  margin-top: 5px;
+  justify-content: center;
+  /* background-color: var(--d); */
+}
 #tableWrapper {
   width: min(800px, 100%);
   overflow-x: scroll;
