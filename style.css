@@ -1,4 +1,12 @@
-#inputBox{
+:root {
+  --a: #edf2fb;
+  --b: #d7e3fc;
+  --c: #ccdbfd;
+  --d: #c1d3fe;
+  --e: #abc4ff;
+}
+
+#inputBox {
   display: flex;
   flex-direction: row;
   margin-bottom: 20px;
@@ -6,7 +14,7 @@
 }
 
 @media (max-width: 600px) {
-  #inputBox{
+  #inputBox {
     flex-direction: column;
   }
 }
@@ -43,8 +51,8 @@ table td {
   min-width: 100px;
   border-bottom: 1px solid #ddd;
 }
-table td{
-  overflow-X: scroll;
+table td {
+  overflow-x: scroll;
 }
 
 table th {
@@ -75,7 +83,7 @@ table td::-webkit-scrollbar-thumb {
   background-color: transparent;
 }
 
-table td::-webkit-scrollbar-thumb {        
+table td::-webkit-scrollbar-thumb {
   background-color: transparent;
 }
 
@@ -87,6 +95,6 @@ table td::-webkit-scrollbar-thumb {
   border: 10px solid transparent;
 }
 
-#tableWrapper::-webkit-scrollbar-thumb {        
+#tableWrapper::-webkit-scrollbar-thumb {
   box-shadow: inset 0 0 0 10px;
 }
