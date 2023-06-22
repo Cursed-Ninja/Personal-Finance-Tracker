@@ -1,3 +1,4 @@
+// Global variables for DOM elements
 const btn = document.getElementById("submit");
 const transactionName = document.getElementById("transactionName");
 const transactionAmount = document.getElementById("amount");
@@ -8,15 +9,23 @@ const editBtn = document.getElementById("editBtn");
 const tableBody = document.getElementById("listItems");
 const errorText = document.getElementById("errorText");
 
+// Global variables for HTML elements
 const editIcon = `<i class="fa fa-edit"></i>`;
 const transactionTypes = `<select id="transactionType"><option value="income">Income</option><option value="expense">Expense</option></select>`;
 
+// Global variables
 let balanceValue = 0;
 let editing = false;
 let tableError = 0;
 
+// Global state
 let rows = {};
 
+/**
+ * Function to generate a random uuid
+ * @param: none
+ * @returns: string
+ */
 const uuid = () => {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0;
@@ -25,10 +34,20 @@ const uuid = () => {
   });
 };
 
+/**
+ * Function to save the current state to local storage
+ * @param: none
+ * @returns: none
+ */
 const saveToLocalStorage = () => {
   localStorage.setItem("rows", JSON.stringify(rows));
 };
 
+/**
+ * Function to check if there are any errors in the expenses table
+ * @param: none
+ * @returns: none
+ */
 const checkTableError = () => {
   if (tableError > 0) {
     editBtn.disabled = true;
@@ -37,7 +56,12 @@ const checkTableError = () => {
   }
 };
 
-const addItemToStore = (id, name, amount, type) => {
+/**
+ * Function to add an item to the state
+ * @param: id: string, name: string, amount: number, type: string
+ * @returns: none
+ */
+const addItemToGlobalState = (id, name, amount, type) => {
   rows[id] = {
     name,
     amount,
@@ -48,10 +72,20 @@ const addItemToStore = (id, name, amount, type) => {
   };
 };
 
+/**
+ * Function to update the balance
+ * @param: none
+ * @returns: none
+ */
 const updateBalance = () => {
   balance.innerHTML = balanceValue;
 };
 
+/**
+ * Function to validate the input fields
+ * @param: value: string, type: string
+ * @returns: boolean
+ */
 const inputValidation = (value, type) => {
   if (type === "name" && value === "") {
     return false;
@@ -64,7 +98,14 @@ const inputValidation = (value, type) => {
   return true;
 };
 
+/**
+ * Function to add a row to the expenses table. Creates dom elements and adds event listeners
+ * @param: id: string, name: string, amount: number, type: string
+ * @returns: none
+ * @side-effects: updates the balance
+ */
 const addRow = (id, name, amount, type) => {
+  // Create DOM elements
   const newRow = document.createElement("tr");
   const itemName = document.createElement("td");
   const itemAmount = document.createElement("td");
@@ -76,8 +117,18 @@ const addRow = (id, name, amount, type) => {
   const itemTypeSelect = document.createElement("select");
   const itemNameError = document.createElement("p");
   const itemAmountError = document.createElement("p");
-  newRow.id = id;
 
+  // Add classes, attributes and ids
+  newRow.id = id;
+  itemNameInput.classList.add("editable");
+  itemAmountInput.classList.add("editable");
+  itemTypeSelect.classList.add("editable");
+  itemDelete.classList.add("delete");
+  itemNameInput.toggleAttribute("disabled");
+  itemAmountInput.toggleAttribute("disabled");
+  itemTypeSelect.toggleAttribute("disabled");
+
+  // Set content and values of DOM elements
   itemTypeSelect.innerHTML = transactionTypes;
   itemTypeSelect.value = type;
 
@@ -88,8 +139,8 @@ const addRow = (id, name, amount, type) => {
   itemNameInput.value = name;
 
   deleteCheckbox.type = "checkbox";
-  itemDelete.classList.add("delete");
 
+  // Add event listeners
   deleteCheckbox.addEventListener("click", () => {
     newRow.classList.toggle("to-delete");
     rows[newRow.id].toDelete = !rows[newRow.id].toDelete;
@@ -160,13 +211,7 @@ const addRow = (id, name, amount, type) => {
     updateBalance();
   });
 
-  itemNameInput.classList.add("editable");
-  itemAmountInput.classList.add("editable");
-  itemTypeSelect.classList.add("editable");
-  itemNameInput.toggleAttribute("disabled");
-  itemAmountInput.toggleAttribute("disabled");
-  itemTypeSelect.toggleAttribute("disabled");
-
+  // Append DOM elements
   itemName.appendChild(itemNameInput);
   itemName.appendChild(itemNameError);
   itemAmount.appendChild(itemAmountInput);
@@ -177,6 +222,7 @@ const addRow = (id, name, amount, type) => {
   newRow.append(itemName, itemAmount, itemType, itemDelete);
   tableBody.appendChild(newRow);
 
+  // Update the balance
   if (type === "income") {
     balanceValue += amount;
   } else {
@@ -185,6 +231,15 @@ const addRow = (id, name, amount, type) => {
   updateBalance();
 };
 
+/**
+ * Function to add an expense to the expenses table and the state
+ * @param: none
+ * @returns: none
+ * @side-effects: updates the balance
+ * @side-effects: saves the current state to local storage
+ * @side-effects: clears the input fields
+ * @side-effects: shows an error message if the input is invalid
+ */
 const addExpense = () => {
   if (!inputValidation(transactionName.value, "name")) {
     errorText.innerText = "Please enter a valid transaction name";
@@ -198,15 +253,27 @@ const addExpense = () => {
   const amount = Number(transactionAmount.value);
   const type = transactionType.value;
   const id = uuid();
-  addItemToStore(id, name, amount, type);
+  addItemToGlobalState(id, name, amount, type);
   addRow(id, name, amount, type);
+  transactionName.value = "";
+  transactionAmount.value = "";
   saveToLocalStorage();
 };
 
+/**
+ * Helper function to toggle the edit class
+ * @param: none
+ * @returns: none
+ */
 const toggleDeleteColumn = () => {
   list.classList.toggle("edit");
 };
 
+/**
+ * Helper function to toggle the disabled attribute of the editable cells
+ * @param: none
+ * @returns: none
+ */
 const toggleEditiableCells = () => {
   const editableCells = document.querySelectorAll(".editable");
   editableCells.forEach((cell) => {
@@ -214,6 +281,12 @@ const toggleEditiableCells = () => {
   });
 };
 
+/**
+ * Function to delete the rows from expenses table and the state if marked for deletion
+ * @param: none
+ * @returns: none
+ * @side-effects: updates the balance
+ */
 const deleteRows = () => {
   const toDelete = document.querySelectorAll(".to-delete");
   toDelete.forEach((row) => {
@@ -228,6 +301,12 @@ const deleteRows = () => {
   updateBalance();
 };
 
+/**
+ * Function to load the state from local storage to generate the expenses table and update the state
+ * @param: none
+ * @returns: none
+ * @side-effects: updates the balance
+ */
 const loadFromLocalStorage = () => {
   rows = JSON.parse(localStorage.getItem("rows"));
   if (rows === null) {
@@ -241,6 +320,7 @@ const loadFromLocalStorage = () => {
   updateBalance();
 };
 
+// Event listeners
 btn.addEventListener("click", () => {
   addExpense();
 });
@@ -266,4 +346,5 @@ transactionAmount.addEventListener("input", () => {
   errorText.innerText = "";
 });
 
+// Initial function calls
 loadFromLocalStorage();
